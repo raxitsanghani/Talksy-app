@@ -368,7 +368,7 @@ socket.on('userList', (users) => {
             nameBox.style.color = 'black';
             dot.style.color = 'black';
         } else {
-            nameBox.style.color = '#006400'; // dark green
+            nameBox.style.color = '#006400'; 
             dot.style.color = '#006400';
         }
         userItem.appendChild(dot);
@@ -828,7 +828,6 @@ const notificationStyles = document.createElement('style');
 
 document.head.appendChild(notificationStyles);
 
-// Layout mode switch logic
 function isMobileDevice() {
     return window.matchMedia('(max-width: 768px)').matches || /Mobi|Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
 }
@@ -851,7 +850,6 @@ function setLayoutMode(mode) {
     }
 }
 
-// Add layout switch button
 let layoutSwitchButton = document.getElementById('layout-switch-button');
 if (!layoutSwitchButton) {
     layoutSwitchButton = document.createElement('button');
@@ -1067,7 +1065,6 @@ socket.on('call-ended', ({ roomKey }) => {
     }
 });
 
-// --- Minimize/Restore Call Logic ---
 const minimizeCallBtn = document.getElementById('minimize-call-btn');
 const miniCallWindow = document.getElementById('mini-call-window');
 const miniCallVideoGrid = document.getElementById('mini-call-video-grid');
@@ -1080,7 +1077,6 @@ const miniLeaveBtn = document.getElementById('mini-leave-btn');
 if (minimizeCallBtn) minimizeCallBtn.onclick = () => {
     document.getElementById('call-modal').style.display = 'none';
     miniCallWindow.style.display = 'flex';
-    // Move video elements to mini window
     while (callVideoGrid.firstChild) {
         miniCallVideoGrid.appendChild(callVideoGrid.firstChild);
     }
@@ -1088,14 +1084,12 @@ if (minimizeCallBtn) minimizeCallBtn.onclick = () => {
 if (restoreCallBtn) restoreCallBtn.onclick = () => {
     miniCallWindow.style.display = 'none';
     document.getElementById('call-modal').style.display = 'flex';
-    // Move video elements back to modal
     while (miniCallVideoGrid.firstChild) {
         callVideoGrid.appendChild(miniCallVideoGrid.firstChild);
     }
 };
 if (miniMuteBtn) miniMuteBtn.onclick = () => {
     toggleMute();
-    // Sync icon state
     if (localStream && localStream.getAudioTracks()[0].enabled) {
         miniMicIconOn.style.display = 'none';
         miniMicIconOff.style.display = '';
@@ -1109,7 +1103,6 @@ if (miniLeaveBtn) miniLeaveBtn.onclick = () => {
     miniCallWindow.style.display = 'none';
 };
 
-// --- Incoming Call Modal Logic ---
 const incomingCallModal = document.getElementById('incoming-call-modal');
 const incomingCallUsername = document.getElementById('incoming-call-username');
 const incomingCallType = document.getElementById('incoming-call-type');
@@ -1118,7 +1111,6 @@ const acceptCallBtn = document.getElementById('accept-call-btn');
 const rejectCallBtn = document.getElementById('reject-call-btn');
 let pendingCall = null;
 
-// Listen for incoming call
 socket.on('incoming-call', ({ from, username, callType, roomKey }) => {
     if (inCall) {
         socket.emit('call-response', { to: from, accepted: false, roomKey });
@@ -1135,7 +1127,6 @@ if (acceptCallBtn) acceptCallBtn.onclick = () => {
     if (!pendingCall) return;
     incomingCallModal.style.display = 'none';
     socket.emit('call-response', { to: pendingCall.from, accepted: true, callType: pendingCall.callType, roomKey: pendingCall.roomKey });
-    // Do NOT call startCall here. Wait for call-started event.
     pendingCall = null;
 };
 if (rejectCallBtn) rejectCallBtn.onclick = () => {
@@ -1144,7 +1135,6 @@ if (rejectCallBtn) rejectCallBtn.onclick = () => {
     socket.emit('call-response', { to: pendingCall.from, accepted: false, roomKey: pendingCall.roomKey });
     pendingCall = null;
 };
-// Listen for call response if you are the caller
 socket.on('call-response', ({ from, accepted }) => {
     if (!accepted) {
         showNotification(`${from} rejected your call`, 'error');

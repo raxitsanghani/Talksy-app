@@ -1171,22 +1171,11 @@ body {
 }
 
 .mode-switch-button, .btn-exit, #layout-switch-button {
-    background: var(--button-bg);
-    color: var(--button-text);
+    background: transparent;
+    color: var(--primary-color);
     border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.3em;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-    padding: 0;
-    margin: 0 5px;
-    flex-direction: row;
+    box-shadow: none;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
 }
 .mode-switch-button .icon {
     display: flex;
@@ -1198,10 +1187,9 @@ body {
     line-height: 1;
 }
 .mode-switch-button:hover, .btn-exit:hover, #layout-switch-button:hover, .call-btn:hover {
-    background-color: rgba(255, 0, 0, 0.1) !important;
-    color: #ff0000 !important;
-    transform: translateY(-2px);
-    animation: redGlow 2s infinite;
+    background: rgba(255,0,0,0.12) !important;
+    color: #ff3b30 !important;
+    box-shadow: 0 2px 8px rgba(255,0,0,0.10);
 }
 :root.dark-mode .mode-switch-button, :root.dark-mode .btn-exit, :root.dark-mode #layout-switch-button {
     background: #222e3c;
@@ -1655,13 +1643,13 @@ body > .mode-switch-button {
     font-size: 1.4em;
     padding: 8px;
     cursor: pointer;
-    border-radius: 8px;
-    transition: all 0.2s ease;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
+    transition: all 0.2s ease;
 }
 
 .emoji-picker-button:hover {
@@ -1978,26 +1966,16 @@ body.mobile-mode .messages-container, body.mobile-mode .users-list {
 }
 
 .call-btn {
-    background: var(--button-bg);
-    color: var(--button-text);
+    background: transparent;
+    color: var(--primary-color);
     border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    margin: 0 5px;
-    font-size: 1.3em;
-    cursor: pointer;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-    transition: background 0.2s, color 0.2s;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    box-shadow: none;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
 }
 .call-btn:hover {
-    background-color: rgba(255, 0, 0, 0.1) !important;
-    color: #ff0000 !important;
-    transform: translateY(-2px);
-    animation: redGlow 2s infinite;
+    background: rgba(255,0,0,0.12) !important;
+    color: #ff3b30 !important;
+    box-shadow: 0 2px 8px rgba(255,0,0,0.10);
 }
 .call-modal {
     position: fixed;
@@ -2020,12 +1998,26 @@ body.mobile-mode .messages-container, body.mobile-mode .users-list {
     align-items: center;
 }
 .call-video-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
-    min-height: 160px;
-    margin-bottom: 18px;
+    height: 100%;
+    min-height: 320px;
+    min-width: 320px;
+    gap: 16px;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+}
+.call-video-grid video {
+    display: block;
+    margin: 0 auto;
+    border-radius: 16px;
+    background: #111;
+    max-width: 90%;
+    max-height: 60vh;
+    object-fit: cover;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.18);
 }
 .call-controls {
     display: flex;
@@ -2036,29 +2028,30 @@ body.mobile-mode .messages-container, body.mobile-mode .users-list {
     margin-top: 18px;
 }
 .call-control-btn {
-    background: var(--button-bg);
-    color: var(--button-text);
+    background: transparent;
+    color: var(--primary-color);
     border: none;
-    border-radius: 50%;
+    box-shadow: none;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
     width: 64px;
     height: 64px;
     margin: 0;
     font-size: 1.4em;
     cursor: pointer;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.10);
-    transition: background 0.2s, color 0.2s;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 0;
+    border-radius: 50% !important;
 }
 .call-control-btn.leave {
     background: var(--error-color);
     color: #fff;
 }
 .call-control-btn:hover {
-    background: var(--primary-color);
-    color: #fff;
+    background: rgba(255,0,0,0.12) !important;
+    color: #ff3b30 !important;
+    box-shadow: 0 2px 8px rgba(255,0,0,0.10);
 }
 .icon {
     display: flex;
@@ -2201,19 +2194,19 @@ body.mobile-mode .messages-container, body.mobile-mode .users-list {
     margin-top: 6px;
 }
 .mini-call-btn {
-    background: var(--button-bg);
-    color: var(--button-text);
+    background: transparent;
+    color: var(--primary-color);
     border: none;
-    border-radius: 50%;
+    box-shadow: none;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
     width: 36px;
     height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.10);
     cursor: pointer;
-    transition: background 0.2s, color 0.2s;
     font-size: 18px;
+    border-radius: 50% !important;
 }
 .mini-call-btn.leave {
     background: var(--error-color);
@@ -2253,6 +2246,7 @@ body.mobile-mode .messages-container, body.mobile-mode .users-list {
     opacity: 1;
     transition: background 0.2s, color 0.2s, box-shadow 0.2s;
     padding: 0;
+    border-radius: 50% !important;
 }
 .call-control-btn.minimize .icon svg {
     color: #fff;
