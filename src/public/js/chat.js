@@ -902,6 +902,8 @@ function showCallModal() {
 function hideCallModal() {
     callModal.style.display = 'none';
     callVideoGrid.innerHTML = '';
+    miniCallWindow.style.display = 'none';
+    miniCallVideoGrid.innerHTML = '';
 }
 
 function addVideoStream(id, stream, isLocal = false) {
@@ -922,9 +924,9 @@ function removeVideoStream(id) {
     if (video) video.remove();
 }
 
-async function startCall(type) {
+async function startCall(type, overrideRoomKey) {
     callType = type;
-    callRoomKey = window.roomKey || 'public';
+    callRoomKey = overrideRoomKey || window.roomKey || 'public';
     inCall = true;
     showCallModal();
     try {
@@ -1061,6 +1063,91 @@ socket.on('call-signal', async ({ from, data }) => {
 
 socket.on('call-ended', ({ roomKey }) => {
     if (inCall && callRoomKey === roomKey) {
+        leaveCall();
+    }
+});
+
+// --- Minimize/Restore Call Logic ---
+const minimizeCallBtn = document.getElementById('minimize-call-btn');
+const miniCallWindow = document.getElementById('mini-call-window');
+const miniCallVideoGrid = document.getElementById('mini-call-video-grid');
+const restoreCallBtn = document.getElementById('restore-call-btn');
+const miniMuteBtn = document.getElementById('mini-mute-btn');
+const miniMicIconOn = document.getElementById('mini-mic-icon-on');
+const miniMicIconOff = document.getElementById('mini-mic-icon-off');
+const miniLeaveBtn = document.getElementById('mini-leave-btn');
+
+if (minimizeCallBtn) minimizeCallBtn.onclick = () => {
+    document.getElementById('call-modal').style.display = 'none';
+    miniCallWindow.style.display = 'flex';
+    // Move video elements to mini window
+    while (callVideoGrid.firstChild) {
+        miniCallVideoGrid.appendChild(callVideoGrid.firstChild);
+    }
+};
+if (restoreCallBtn) restoreCallBtn.onclick = () => {
+    miniCallWindow.style.display = 'none';
+    document.getElementById('call-modal').style.display = 'flex';
+    // Move video elements back to modal
+    while (miniCallVideoGrid.firstChild) {
+        callVideoGrid.appendChild(miniCallVideoGrid.firstChild);
+    }
+};
+if (miniMuteBtn) miniMuteBtn.onclick = () => {
+    toggleMute();
+    // Sync icon state
+    if (localStream && localStream.getAudioTracks()[0].enabled) {
+        miniMicIconOn.style.display = 'none';
+        miniMicIconOff.style.display = '';
+    } else {
+        miniMicIconOn.style.display = '';
+        miniMicIconOff.style.display = 'none';
+    }
+};
+if (miniLeaveBtn) miniLeaveBtn.onclick = () => {
+    leaveCall();
+    miniCallWindow.style.display = 'none';
+};
+
+// --- Incoming Call Modal Logic ---
+const incomingCallModal = document.getElementById('incoming-call-modal');
+const incomingCallUsername = document.getElementById('incoming-call-username');
+const incomingCallType = document.getElementById('incoming-call-type');
+const incomingCallAvatar = document.getElementById('incoming-call-avatar');
+const acceptCallBtn = document.getElementById('accept-call-btn');
+const rejectCallBtn = document.getElementById('reject-call-btn');
+let pendingCall = null;
+
+// Listen for incoming call
+socket.on('incoming-call', ({ from, username, callType, roomKey }) => {
+    if (inCall) {
+        socket.emit('call-response', { to: from, accepted: false, roomKey });
+        return;
+    }
+    pendingCall = { from, username, callType, roomKey };
+    incomingCallUsername.textContent = username;
+    incomingCallType.textContent = callType === 'video' ? 'Video Call' : 'Audio Call';
+    incomingCallAvatar.textContent = username ? username[0].toUpperCase() : '?';
+    incomingCallModal.style.display = 'flex';
+});
+
+if (acceptCallBtn) acceptCallBtn.onclick = () => {
+    if (!pendingCall) return;
+    incomingCallModal.style.display = 'none';
+    socket.emit('call-response', { to: pendingCall.from, accepted: true, callType: pendingCall.callType, roomKey: pendingCall.roomKey });
+    // Do NOT call startCall here. Wait for call-started event.
+    pendingCall = null;
+};
+if (rejectCallBtn) rejectCallBtn.onclick = () => {
+    if (!pendingCall) return;
+    incomingCallModal.style.display = 'none';
+    socket.emit('call-response', { to: pendingCall.from, accepted: false, roomKey: pendingCall.roomKey });
+    pendingCall = null;
+};
+// Listen for call response if you are the caller
+socket.on('call-response', ({ from, accepted }) => {
+    if (!accepted) {
+        showNotification(`${from} rejected your call`, 'error');
         leaveCall();
     }
 });

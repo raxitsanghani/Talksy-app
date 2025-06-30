@@ -345,9 +345,35 @@ module.exports = (io, onlineUsers, User) => {
       const key = roomKey || 'public';
       if (!roomCallParticipants.has(key)) roomCallParticipants.set(key, new Set());
       const participants = roomCallParticipants.get(key);
-      if (participants.size === 0) {
+      // Notify all other users in the room except the caller
+      const roomSockets = Array.from(io.sockets.adapter.rooms.get(key) || []);
+      roomSockets.forEach(sid => {
+        if (sid !== socket.id) {
+          io.to(sid).emit('incoming-call', { from: socket.id, username: currentUser, callType, roomKey: key });
+        }
+      });
+      // Add the caller as a participant and start their call modal immediately
+      participants.add(socket.id);
+      io.to(socket.id).emit('call-started', { initiator: socket.id, callType, roomKey: key });
+    });
+
+    // Accept/reject call
+    socket.on('call-response', ({ to, accepted, callType, roomKey }) => {
+      if (!to) return;
+      const key = roomKey || 'public';
+      if (accepted) {
+        // Add this user to the call participants and start their call
+        if (!roomCallParticipants.has(key)) roomCallParticipants.set(key, new Set());
+        const participants = roomCallParticipants.get(key);
         participants.add(socket.id);
-        io.to(key).emit('call-started', { initiator: socket.id, callType, roomKey: key });
+        io.to(socket.id).emit('call-started', { initiator: to, callType, roomKey: key });
+        // Notify the caller that this user accepted
+        io.to(to).emit('call-response', { from: currentUser, accepted: true });
+        // Update participants for all
+        io.to(key).emit('call-participants', Array.from(participants));
+      } else {
+        // Notify the caller that this user rejected
+        io.to(to).emit('call-response', { from: currentUser, accepted: false });
       }
     });
 

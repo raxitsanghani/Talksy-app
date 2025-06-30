@@ -66,7 +66,12 @@
         </div>
     </div>
     <div id="call-modal" class="call-modal" style="display:none;">
-        <div class="call-modal-content">
+        <div class="call-modal-content" style="position:relative;">
+            <button id="minimize-call-btn" class="call-control-btn minimize" title="Minimize Call">
+                <span class="icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </span>
+            </button>
             <div id="call-video-grid" class="call-video-grid"></div>
             <div class="call-controls">
                 <button id="mute-btn" class="call-control-btn" title="Mute/Unmute">
@@ -90,6 +95,48 @@
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline></svg>
                     </span>
                 </button>
+            </div>
+        </div>
+    </div>
+    <!-- Mini Call Window (hidden by default) -->
+    <div id="mini-call-window" class="mini-call-window" style="display:none;">
+        <div class="mini-call-content">
+            <div id="mini-call-video-grid" class="mini-call-video-grid"></div>
+            <div class="mini-call-controls">
+                <button id="restore-call-btn" class="mini-call-btn" title="Full Screen Call">
+                    <span class="icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 8 4 4 8 4"/><polyline points="20 16 20 20 16 20"/><line x1="4" y1="4" x2="10" y2="10"/><line x1="20" y1="20" x2="14" y2="14"/></svg>
+                    </span>
+                </button>
+                <button id="mini-mute-btn" class="mini-call-btn" title="Mute/Unmute">
+                    <span class="icon" id="mini-mic-icon-on">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
+                    </span>
+                    <span class="icon" id="mini-mic-icon-off" style="display:none;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                    </span>
+                </button>
+                <button id="mini-leave-btn" class="mini-call-btn leave" title="Leave Call">
+                    <span class="icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline></svg>
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Incoming Call Modal -->
+    <div id="incoming-call-modal" class="incoming-call-modal" style="display:none;">
+        <div class="incoming-call-content">
+            <div class="incoming-call-info">
+                <span id="incoming-call-avatar" class="incoming-call-avatar"></span>
+                <div>
+                    <div id="incoming-call-username" class="incoming-call-username"></div>
+                    <div id="incoming-call-type" class="incoming-call-type"></div>
+                </div>
+            </div>
+            <div class="incoming-call-actions">
+                <button id="accept-call-btn" class="incoming-call-btn accept">Accept</button>
+                <button id="reject-call-btn" class="incoming-call-btn reject">Reject</button>
             </div>
         </div>
     </div>
