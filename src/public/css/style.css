@@ -381,67 +381,16 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-    color: #ff0000;
+}
+
+.users-list li::before,
+#users-list li.current-user::before {
+    content: none !important;
+    display: none !important;
 }
 
 .users-list li.online {
     color: #ebe4e4;
-}
-
-.users-list li::before {
-    content: "•";
-    font-size: 1.5em;
-    line-height: 0;
-    margin-right: 5px;
-    color: #ff0000; 
-    text-shadow: 
-        0 0 5px #ff0000,
-        0 0 10px #ff0000,
-        0 0 15px #ff0000;
-    animation: redGlow 2s ease-in-out infinite alternate;
-}
-
-.users-list li.online::before {
-    color: #00ff00;
-    text-shadow: 
-        0 0 5px #00ff00,
-        0 0 10px #00ff00,
-        0 0 15px #00ff00;
-    animation: greenGlow 2s ease-in-out infinite alternate;
-}
-
-@keyframes greenGlow {
-    from {
-        text-shadow: 
-            0 0 5px #00ff00,
-            0 0 10px #00ff00,
-            0 0 15px #00ff00;
-    }
-    to {
-        text-shadow: 
-            0 0 10px #00ff00,
-            0 0 20px #00ff00,
-            0 0 30px #00ff00,
-            0 0 40px #00ff00;
-    }
-}
-
-@keyframes redGlow {
-    0% {
-        box-shadow: 0 0 5px #ff0000,
-                   0 0 15px #ff0000,
-                   0 0 25px #ff0000;
-    }
-    50% {
-        box-shadow: 0 0 10px #ff0000,
-                   0 0 20px #ff0000,
-                   0 0 30px #ff0000;
-    }
-    100% {
-        box-shadow: 0 0 5px #ff0000,
-                   0 0 15px #ff0000,
-                   0 0 25px #ff0000;
-    }
 }
 
 .users-list li:hover {
@@ -1843,7 +1792,6 @@ body > .mode-switch-button {
     }
 }
 
-/* --- MOBILE LAYOUT & MOBILE-MODE OVERRIDES --- */
 
 @media (max-width: 768px) {
   .chat-container {
@@ -1929,7 +1877,6 @@ body > .mode-switch-button {
     min-height: 44px;
     padding: 8px 12px;
   }
-  /* Hide scrollbars for mobile for a cleaner look */
   ::-webkit-scrollbar {
     display: none;
   }
@@ -2022,7 +1969,6 @@ body.mobile-mode .btn-exit, body.mobile-mode .mode-switch-button {
   min-height: 44px;
   padding: 8px 12px;
 }
-/* Hide scrollbars for mobile-mode for a cleaner look */
 body.mobile-mode ::-webkit-scrollbar {
   display: none;
 }
@@ -2191,4 +2137,14 @@ body.mobile-mode .messages-container, body.mobile-mode .users-list {
     right: 32px;
     margin-bottom: 0;
     z-index: 100;
+}
+
+:root.dark-mode .user-dot,
+:root.dark-mode .user-transparent-box {
+    color: #00ff00 !important;
+}
+
+:root:not(.dark-mode) .user-dot,
+:root:not(.dark-mode) .user-transparent-box {
+    color: #006400 !important;
 }

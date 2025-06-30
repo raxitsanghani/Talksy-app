@@ -354,11 +354,26 @@ socket.on('userList', (users) => {
     users.forEach(user => {
         const userItem = document.createElement('li');
         userItem.className = 'user-box';
+        const dot = document.createElement('span');
+        dot.className = 'user-dot';
+        dot.textContent = '•';
         const nameBox = document.createElement('span');
         nameBox.className = 'user-transparent-box';
-        nameBox.textContent = user;
+        let displayName = user.username || user;
+        if (displayName === username) {
+            displayName += ' (You)';
+        }
+        nameBox.textContent = displayName;
+        if (user.username === username) {
+            nameBox.style.color = 'black';
+            dot.style.color = 'black';
+        } else {
+            nameBox.style.color = '#006400'; // dark green
+            dot.style.color = '#006400';
+        }
+        userItem.appendChild(dot);
         userItem.appendChild(nameBox);
-        if (user === username) {
+        if (user.username === username) {
             userItem.classList.add('current-user');
         }
         usersList.appendChild(userItem);
