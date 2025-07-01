@@ -507,18 +507,30 @@ body {
 }
 
 .btn-exit {
-    padding: 8px 16px;
-    background: transparent;
-    border: 1px solid var(--border-color);
-    color: var(--text-color);
-    cursor: pointer;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    font-size: 1rem;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    max-width: 40px;
+    max-height: 40px;
+    border-radius: 50%;
+    background: transparent !important;
+    color: var(--primary-color);
     display: flex;
     align-items: center;
-    gap: 6px;
-    box-shadow: 1px 1px 1px 1px;
+    justify-content: center;
+    box-shadow: none;
+    padding: 0;
+    margin: 0 5px;
+    font-size: 1.3em;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+.btn-exit .icon svg {
+    width: 22px;
+    height: 22px;
+    font-size: 22px;
 }
 
 :root.dark-mode .btn-exit {
